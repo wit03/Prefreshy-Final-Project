@@ -8,17 +8,18 @@ int monthDisplay = 0;
 int yearDisplay = 0;
 
 float currentMoney = 1000.00;
+float change = 0.00;
 float bankInterestAmount = 0.00;
 float fundInterestAmount = 0.00;
 float BankInterestRate = 6.00;
-float fundInterestRate = 0.00;
 
+float fundInterestRateArr[20];
 
 int currentSelection = 0;
 
 int anouncement()
 {
-    printf("\nTime past: %d years %d months (For debug monthPass: %d)\n", monthPass/12, monthPass%12, monthPass);
+    printf("\nTime past: %d years %d months ***For debug monthPass: %d***\n", monthPass/12, monthPass%12, monthPass);
     printf("Current Money: %.2f Majikite\n", currentMoney);
     printf("\n");
     return 0;
@@ -42,15 +43,19 @@ int questions()
 
     if (currentSelection == 1) //select fund
     {
-        monthPass += 3;
-        fundInterestAmount = (fundInterestRate/100) * currentMoney;
+       monthPass += 3;
+        fundInterestAmount = ((fundInterestRateArr[(int)(monthPass/3)]) * currentMoney)/100.00;
         currentMoney += (3.00 * fundInterestAmount);
+         printf("\n***For debug: fundInterestAmount: %f***", fundInterestAmount);
+        printf("\n***For debug: fundInterestRateArr %f***", fundInterestRateArr[(int)(monthPass/3)]);
+        
     }
     else if (currentSelection == 2) //select bank
     {
         monthPass += 6;
         bankInterestAmount = ((BankInterestRate/100) * currentMoney);
         currentMoney += (6.00 * bankInterestAmount);
+        
     }
     else
     {
@@ -59,74 +64,43 @@ int questions()
 return 0;
 }
 
+void generateRandom() {
+    for(int i = 0; i < 20; i++) {
+        fundInterestRateArr[i] = rand() % (8 + 1 - 3) + 3;   
+    }
+}
+
+
+void changeCal() {
+    float sizeArr[11] = { 1000.00, 500.00, 100.00, 50.00, 20.00, 10.00, 5.00, 2.00, 1.00, 0.50, 0.25 };
+    
+    for(int i = 0; i < 11; i++) {
+        printf("\n%.2f Majikite  x%d ", sizeArr[i], (int)floor(change/sizeArr[i]));
+        change = fmod(change, sizeArr[i]);
+    }
+}
+
 int main()
 {
+    generateRandom();
     printf("Start Money: %.2f Majikite\n", currentMoney);
     printf("\n");
 
     while (monthPass < 60)
     {
-        srand(time(NULL));
-        fundInterestRate = rand() % (8 + 1 - 3) + 3;
         anouncement();
         if(currentSelection == 2) {
-            float fundInterestRate1 = rand() % (8 + 1 - 3) + 3;
-            float fundInterestRate2 = rand() % (8 + 1 - 3) + 3;
-            interestAnouncement(fundInterestRate1, monthPass-3.00);
-            interestAnouncement(fundInterestRate2, monthPass);
+            interestAnouncement(fundInterestRateArr[(int)(monthPass-3.00)/3] , monthPass-3.00);
+            interestAnouncement(fundInterestRateArr[(int)monthPass/3], monthPass);
         } else if (currentSelection == 1) {
-            interestAnouncement(fundInterestRate, monthPass);
+            interestAnouncement(fundInterestRateArr[(int)monthPass/3], monthPass);
         }
         questions();
     }
 
     printf("Final Money: %.2f Majikite", currentMoney);
+    change = currentMoney;
 
-    float change = currentMoney;
-    if(change >= 1000.00){
-        printf("\n1000 Majikite  x%.2f ", change/1000.00);
-        change = fmod(change, 1000.00);
-    }
-      
-    if(change >= 500.00){
-        printf("\n500 Majikite  x%.2f ", change/500.00);
-        change = fmod(change, 500.00);
-    }
-      
-    if(change >= 100.00){
-        printf("\n100 Majikite  x%.2f ", change/100.00);
-        change = fmod(change, 100.00);
-    }
-
-    if(change >= 50.00){
-        printf("\n50 Majikite  x%.2f ", change/50.00);
-        change = fmod(change, 50.00);
-    }
-
-    if(change >= 20.00){
-        printf("\n20 Majikite  x%.2f ", change/20.00);
-        change = fmod(change, 20.00);
-    }
-      
-   if(change >= 10.00){
-        printf("\n10 Majikite  x%.2f ", change/10.00);
-        change = fmod(change, 10.00);
-    }
-      
-    // if(change >= 5){
-    //     printf("\n   5 Baht = %d", change/5);
-    //     change = change % 5;
-    // }
-      
-    // if(change >= 2){
-    //     printf("\n   2 Baht = %d", change/2);
-    //     change = change % 2;
-    // }
-      
-    // if(change >= 1){
-    //     printf("\n   1 Baht = %d", change);
-    // }
-
-
+    changeCal();
     return 0;
 }
