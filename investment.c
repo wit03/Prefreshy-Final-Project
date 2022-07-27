@@ -80,6 +80,10 @@ void changeCal() {
     }
 }
 
+void bestCase() {
+    
+}
+
 int main()
 {
     generateRandom();
