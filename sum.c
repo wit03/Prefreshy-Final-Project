@@ -2,10 +2,10 @@
 #include <stdlib.h>
 //#include "CTime.h"
 
-#define SUM 60
-#define MAXNUMsSIZE 100
+#define SUM 300
+#define MAXNUMsSIZE 30
 
-#define PRINT 1
+#define PRINT 0
 
 
 long long CountAddToSum(int,int[],int,const int[],int);
@@ -14,7 +14,7 @@ long long table1[SUM][MAXNUMsSIZE];
 
 int main()
 {
-    int Nums[]={3,6};
+    int Nums[]={3,4,5,6,7,9,13,11,12,13,22,35,17,14,18,23,33,54};
     int sum=SUM;
     int size=sizeof(Nums)/sizeof(int);
     int i,j,a[]={0};
@@ -81,5 +81,21 @@ void printr(const int r[], int rsize)
     if(r[i-1]==lastr) printf(" %d*%d ",count,lastr);
 
     printf("\n");
+
+}
+
+void bestCase(float money, int month) {
+    float tmp1, tmp2;
+    if (month >= 60) {
+        if(money >= bestSum && month == 60) {
+            bestSum = money;
+        }
+        return;
+    }
+    tmp1 = money * fundInterestRateArr
+    tmp2 = money * (6/100) *6 
+    
+
+
 
 }
