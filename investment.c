@@ -111,7 +111,7 @@ void changeCal()
 
 void bestCase(float money, int month)
 {
-    float tmp1, tmp2;
+    float currentAmountOnFund, currentAmountOnBank;
     if (month >= 60)
     {
         if (money >= bestSum && month == 60)
@@ -121,11 +121,11 @@ void bestCase(float money, int month)
         return;
     }
 
-    tmp1 = 3 * (((fundInterestRateArr[month / 3]) * money) / 100.00);
-    tmp2 = 6 * (BankInterestRate / 100) * money;
+    currentAmountOnFund = 3 * (((fundInterestRateArr[month / 3]) * money) / 100.00);
+    currentAmountOnBank = 6 * (BankInterestRate / 100) * money;
 
-    bestCase(money + tmp1, month + 3);
-    bestCase(money + tmp2, month + 6);
+    bestCase(money + currentAmountOnFund, month + 3);
+    bestCase(money + currentAmountOnBank, month + 6);
 }
 
 void showHistory()
@@ -135,13 +135,9 @@ void showHistory()
     {
         int monthParse = i * 3;
         if (decisionHistoryArr[i] == 1)
-        {
             printf("%d years %d months: Fund\n", monthParse / 12, monthParse % 12);
-        }
         else if (decisionHistoryArr[i] == 2)
-        {
             printf("%d years %d months: Bank\n", monthParse / 12, monthParse % 12);
-        }
     }
 }
 
