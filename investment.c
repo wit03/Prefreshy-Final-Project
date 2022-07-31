@@ -11,11 +11,15 @@ float bankInterestAmount = 0.00;
 float fundInterestAmount = 0.00;
 float BankInterestRate = 6.00;
 
-float fundInterestRateArr[20];
+float fundInterestRateArr[20] = {0};
+
 int decisionHistoryArr[20] = {0};
+float increaseAmountHistory[20] = {0};
 
 int currentSelection = 0;
 int previousSelection = 0;
+
+int step = 0;
 
 float bestSum = 0.00;
 
@@ -36,50 +40,60 @@ void questions()
 {
     printf("What do you want to choose next?\n");
     printf("1. Majikleen Fund (3-8%c) 3 months\n", '%');
-    printf("2. Bank (%.2f%c) 6 months\n", BankInterestRate, '%');
-    printf("3. Undo");
+    if(monthPass < 57) 
+        printf("2. Bank (%.2f%c) 6 months\n", BankInterestRate, '%');
+    if(BankInterestRate > 2.00) 
+        printf("3. Undo"); 
     printf("\n");
     printf("Your Selection: ");
     scanf("%d", &currentSelection);
 
     if (currentSelection == 1) // select fund
-    {   
+    {
         previousSelection = currentSelection;
         monthPass += 3;
         fundInterestAmount = ((fundInterestRateArr[(int)(monthPass / 3)]) * currentMoney) / 100.00;
+        increaseAmountHistory[step] = (3.00 * fundInterestAmount);
         currentMoney += (3.00 * fundInterestAmount);
         decisionHistoryArr[monthPass / 3] = 1;
+        step++;
         printf("\n***For debug: fundInterestAmount: %f***", fundInterestAmount);
         printf("\n***For debug: fundInterestRateArr %f***", fundInterestRateArr[(int)(monthPass / 3)]);
     }
-    else if (currentSelection == 2) // select bank
+    else if (currentSelection == 2 && monthPass < 57) // select bank
     {
         previousSelection = currentSelection;
         monthPass += 6;
         bankInterestAmount = ((BankInterestRate / 100) * currentMoney);
+        increaseAmountHistory[step] = (6.00 * bankInterestAmount);
         currentMoney += (6.00 * bankInterestAmount);
         decisionHistoryArr[monthPass / 3] = 2;
+        step++;
     }
-    else if (currentSelection == 3) //select undo
+    else if (currentSelection == 3) // select undo
     {
-        if(BankInterestRate > 2.00) {
-            if(previousSelection == 1) { //chose fund
-               monthPass -= 3;
-                currentMoney -= (3* fundInterestAmount);
+        if (BankInterestRate > 2.00)
+        {
+            step--;
+            if (previousSelection == 1)
+            { // chose fund
+                monthPass -= 3;
+                currentMoney -= increaseAmountHistory[step];
                 decisionHistoryArr[monthPass / 3] = 0;
-                 
-                
-            } else if (previousSelection == 2) { //chose bank
+            }
+            else if (previousSelection == 2)
+            { // chose bank
                 monthPass -= 6;
-                currentMoney -= (6* bankInterestAmount);
+                currentMoney -= increaseAmountHistory[step];
                 decisionHistoryArr[monthPass / 3] = 0;
-                
             }
             printf("\n\n***For debug: previous selection %d ***\n\n", previousSelection);
-            questions();
+            printf("\n\n***For debug: currentMoney %.2f ***\n\n", currentMoney);
             BankInterestRate--;
-            
-        } else {
+            questions();
+        }
+        else
+        {
             printf("\nYou can't undo anymore, continue with current selection\n");
         }
     }
@@ -143,13 +157,14 @@ void showHistory()
 
 int main()
 {
-    generateRandom();
+
     bestCase(currentMoney, 0);
     printf("Start Money: %.2f Majikite\n", currentMoney);
     printf("\n");
 
     while (monthPass < 60)
     {
+        generateRandom();
         anouncement();
         if (currentSelection == 2)
         {
