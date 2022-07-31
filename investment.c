@@ -25,7 +25,7 @@ float bestSum = 0.00;
 
 void anouncement()
 {
-    printf("\nTime past: %d years %d months ***For debug monthPass: %d***\n", monthPass / 12, monthPass % 12, monthPass);
+    printf("\nTime past: %d years %d months\n", monthPass / 12, monthPass % 12, monthPass);
     printf("Current Money: %.2f Majikite\n", currentMoney);
     printf("\n");
 }
@@ -57,8 +57,6 @@ void questions()
         currentMoney += (3.00 * fundInterestAmount);
         decisionHistoryArr[monthPass / 3] = 1;
         step++;
-        printf("\n***For debug: fundInterestAmount: %f***", fundInterestAmount);
-        printf("\n***For debug: fundInterestRateArr %f***", fundInterestRateArr[(int)(monthPass / 3)]);
     }
     else if (currentSelection == 2 && monthPass < 57) // select bank
     {
@@ -87,8 +85,6 @@ void questions()
                 currentMoney -= increaseAmountHistory[step];
                 decisionHistoryArr[monthPass / 3] = 0;
             }
-            printf("\n\n***For debug: previous selection %d ***\n\n", previousSelection);
-            printf("\n\n***For debug: currentMoney %.2f ***\n\n", currentMoney);
             BankInterestRate--;
             questions();
         }
