@@ -25,7 +25,7 @@ float bestSum = 0.00;
 
 void anouncement()
 {
-    printf("\nTime past: %d years %d months\n", monthPass / 12, monthPass % 12, monthPass);
+    printf("\nTime past: %d years %d months\n", monthPass / 12, monthPass % 12);
     printf("Current Money: %.2f Majikite\n", currentMoney);
     printf("\n");
 }
@@ -38,6 +38,7 @@ void interestAnouncement(float fundInterest, int monthParse)
 
 void questions()
 {
+    printf("\n=================================\n");
     printf("What do you want to choose next?\n");
     printf("1. Majikleen Fund (3-8%c) 3 months\n", '%');
     if(monthPass < 57) 
@@ -174,7 +175,7 @@ int main()
         questions();
     }
 
-    printf("Final Money: %.2f Majikite", currentMoney);
+    printf("\nFinal Money: %.2f Majikite\n", currentMoney);
     change = currentMoney;
 
     changeCal();
